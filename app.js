@@ -1,10 +1,7 @@
 // // REQUIRED
 const inquirer = require('inquirer');
-// const fs = require('fs');
-// const generatePage = require('./src/page-template.js');
-
-// // GLOBAL VARIABLES
-// const pageHTML = generatePage(name, github);
+const fs = require('fs');
+const generatePage = require('./src/page-template');
 
 // // FUNCTIONS
 // Get basic information from user
@@ -154,10 +151,13 @@ const promptProject = (portfolioData) => {
 // FUNCTION CALLS
 promptUser() // Prompt for basic info
   .then(promptProject) // Prompt for project data
-  .then((portfolioData) => console.log(portfolioData));
+  .then((portfolioData) => {
+    const pageHTML = generatePage(portfolioData);
+    fs.writeFile('./index.html', pageHTML, (err) => {
+      if (err) throw err;
 
-// fs.writeFile('./index.html', pageHTML, (err) => {
-//   if (err) throw err;
-
-//   console.log('Portfolio complete! Check out index.html to see the output.');
-// });
+      console.log(
+        'Portfolio complete! Check out index.html to see the output.'
+      );
+    });
+  });
